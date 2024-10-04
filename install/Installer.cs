@@ -5,8 +5,8 @@ using WixSharp.CommonTasks;
 using WixSharp.Controls;
 using Assembly = System.Reflection.Assembly;
 
-const string outputName = "CWO_App";
-const string projectName = "CWO_App";
+const string outputName = "Sharp Revit Tools";
+const string projectName = "Sharp Revit Tools";
 
 var project = new Project
 {
@@ -16,13 +16,13 @@ var project = new Project
     UI = WUI.WixUI_FeatureTree,
     MajorUpgrade = MajorUpgrade.Default,
     GUID = new Guid("235D1107-BED9-48BA-9D2F-37B4B046C071"),
-    BannerImage = @"install\Resources\Icons\BannerImage.png",
-    BackgroundImage = @"install\Resources\Icons\BackgroundImage.png",
+   // BannerImage = @"install\Resources\Icons\BannerImage.png",
+   // BackgroundImage = @"install\Resources\Icons\BackgroundImage.png",
     Version = Assembly.GetExecutingAssembly().GetName().Version.ClearRevision(),
     ControlPanelInfo =
     {
         Manufacturer = Environment.UserName,
-        ProductIcon = @"install\Resources\Icons\ShellIcon.ico"
+        //ProductIcon = @"install\Resources\Icons\ShellIcon.ico"
     }
 };
 

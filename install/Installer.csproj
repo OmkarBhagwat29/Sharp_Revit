@@ -9,8 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="WixSharp.bin" Version="1.*"/>
-        <PackageReference Include="WixSharp.wix.bin" Version="3.*"/>
+        <PackageReference Include="WixSharp.bin" Version="1.*" />
+        <PackageReference Include="WixSharp.wix.bin" Version="3.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\Icons\" />
     </ItemGroup>
 
 </Project>

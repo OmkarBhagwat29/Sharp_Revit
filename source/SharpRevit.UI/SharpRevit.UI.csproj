@@ -50,7 +50,7 @@
 
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\RevitCore\RevitCore.csproj" />
+	  <ProjectReference Include="..\RevitCore\RevitCore.csproj" />
 	</ItemGroup>
 
 

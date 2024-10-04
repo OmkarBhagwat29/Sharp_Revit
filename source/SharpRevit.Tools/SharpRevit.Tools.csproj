@@ -70,7 +70,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\RevitCore\RevitCore.csproj" />
+	  <ProjectReference Include="..\RevitCore\RevitCore.csproj" />
 	  <ProjectReference Include="..\SharpRevit.UI\SharpRevit.UI.csproj" />
 	</ItemGroup>
 

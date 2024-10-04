@@ -49,8 +49,6 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
         [ObservableProperty] private string _selectedCategoryName;
 
         [ObservableProperty] private string _searchFamilyText;
-        //[ObservableProperty] private ObservableCollection<string> _familyNames = [];
-        //[ObservableProperty] private string _selectedFamilyName;
 
 
         [ObservableProperty] private string _searchKeynoteText;

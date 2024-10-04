@@ -32,7 +32,7 @@
 		<StartAction>Program</StartAction>
 		<StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
 		<StartArguments>/language ENG</StartArguments>
-		<ApplicationManifest>SharpRevit_Tools.addin</ApplicationManifest>
+		<ApplicationManifest>SharpRevit.Tools.addin</ApplicationManifest>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -45,17 +45,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Nice3point.Revit.Build.Tasks" Version="1.*" />
+		<PackageReference Include="Nice3point.Revit.Build.Tasks" Version="2.0.2" />
 		<PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*-*" />
 		<PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*-*" />
 		<PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*-*" />
 		<PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*-*" />
-		<PackageReference Include="Serilog.Sinks.Debug" Version="2.*" />
-		<PackageReference Include="Serilog.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" Condition="$(RevitVersion) == '2025'" />
 		<PackageReference Include="Serilog.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" Condition="$(RevitVersion) == '2025'" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
-		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
 	</ItemGroup>
 
 

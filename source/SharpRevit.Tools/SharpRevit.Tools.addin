@@ -2,9 +2,10 @@
 <RevitAddIns>
 	<AddIn Type="Application">
 		<Name>Sharp Revit Tools</Name>
-		<Assembly>SharpRevit_Tools\SharpRevit_Tools.dll</Assembly>
-		<FullClassName>SharpRevit_Tools.Application</FullClassName>
-		<AddInId>3124EB6E-8BAC-4F27-8F95-22ECCB843944</AddInId>
+		<Assembly>SharpRevit.Tools\SharpRevit.Tools.dll</Assembly>
+		<FullClassName>SharpRevit.Tools.Application</FullClassName>
+		<AddInId>EF612AD7-76CA-4CB0-875A-E58914503997
+		</AddInId>
 		<VendorId>om</VendorId>
 		<VendorDescription>Contact Om @ ombhagwat29@gmail.com, http://example.com/test</VendorDescription>
 	</AddIn>

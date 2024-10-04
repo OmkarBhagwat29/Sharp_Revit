@@ -14,12 +14,12 @@
 
         Bundles =
         [
-            Solution.Sharp_Revit
+            Solution.SharpRevit_Tools
         ];
 
         InstallersMap = new()
         {
-            { Solution.Installer, Solution.Sharp_Revit }
+            { Solution.Installer, Solution.SharpRevit_Tools }
         };
     }
 }

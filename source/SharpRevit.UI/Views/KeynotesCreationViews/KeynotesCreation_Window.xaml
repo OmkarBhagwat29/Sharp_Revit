@@ -7,7 +7,7 @@
         mc:Ignorable="d"
          xmlns:viewModels ="clr-namespace:SharpRevit.UI.ViewModels.KeynotesCreationViewModel"
         d:DataContext="{d:DesignInstance viewModels:KeynotesCreation_ViewModel}"
-        Title="Keynotes Creation" Height="750" Width="1000"
+        Title="Keynotes App" Height="750" Width="1000"
         ResizeMode="NoResize"
         >
 
@@ -30,9 +30,7 @@
 
             <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.1*"/>
-                <RowDefinition Height="0.1*"/>
-                <RowDefinition Height="0.1*"/>
+
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="0.1*"/>
 
@@ -40,78 +38,16 @@
                 <RowDefinition Height="0.15*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
-
-                <Button 
-                    Margin="0,0,0,0"
-                    FontSize="14"
-                      HorizontalAlignment="Center"
-                      BorderThickness="0"
-                      Width="150" Height="30"
-                      Content="Select Uniclass Excel"
-                      Style="{StaticResource CustomButtonStyle}"
-                      Command="{Binding SelectUniclassExcelFileCommand}"/>
-
-                <Button Margin="10,0,0,0"
-                      FontSize="14"
-                      HorizontalAlignment="Center"
-                      BorderThickness="0"
-                      Width="170" Height="30"
-                      Content="Select Specification Excel"
-                      Style="{StaticResource CustomButtonStyle}"
-                      Command="{Binding SelectSpecificationExcelFileCommand}"/>
-            </StackPanel>
-
-
-            <StackPanel Grid.Row="1"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center">
-
-                <Button Margin="10,0,0,0"
-                      FontSize="14"
-                      HorizontalAlignment="Center"
-                      BorderThickness="0"
-                      Width="110" Height="30"
-                      Content="Keynote Folder"
-                      Style="{StaticResource CustomButtonStyle}"
-                      Command="{Binding SelectKeynoteFolderCommand}"/>
-
-                <Label Margin="20,0,0,0" 
-                    Content="Keynote File Name: " FontSize="14"/>
-                <TextBox
-                    FontSize="14"
-                    Width="200" Text="{Binding KeynoteFileName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            </StackPanel>
 
             <StackPanel
-                    Grid.Row="2"
+                    Grid.Row="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
 
-                <Button 
-                    Margin="0,0,0,0"
-                    FontSize="14"
-                      HorizontalAlignment="Center"
-                      BorderThickness="0"
-                      Width="100" Height="30"
-                      Content="Create"
-                      Style="{StaticResource CustomButtonStyle}"
-                      Command="{Binding CreateKeynoteFileCommand}"/>
-
-                    <Button Margin="10,0,0,0"
-                      FontSize="14"
-                      HorizontalAlignment="Center"
-                      BorderThickness="0"
-                      Width="100" Height="30"
-                      Content="Load"
-                      Style="{StaticResource CustomButtonStyle}"
-                      Command="{Binding LoadKeynoteFileCommand}"/>
                 </StackPanel>
 
-            <StackPanel Grid.Row="4"
+            <StackPanel Grid.Row="1"
                         Orientation="Horizontal"
                         VerticalAlignment="Center">
 
@@ -143,7 +79,8 @@
 
 
              <DataGrid x:Name="DataGrdiFamily"
-                          Margin="5" Grid.Row="5"
+                          Margin="5" Grid.Row="2"
+                       FontSize="14"
                           Background="White"
                           ItemsSource="{Binding FamilyCollection.View}"
                           AutoGenerateColumns="False"
@@ -231,6 +168,15 @@
                    VerticalAlignment="Top"
                    FontWeight="Bold"
                    FontSize="16"/>
+
+            <Button Margin="-100,0,0,0"
+    FontSize="14"
+    HorizontalAlignment="Center"
+    BorderThickness="0"
+    Width="100" Height="30"
+    Content="Load"
+    Style="{StaticResource CustomButtonStyle}"
+    Command="{Binding LoadKeynoteFileCommand}"/>
 
             <!-- Search Box -->
             <StackPanel Orientation="Horizontal" Grid.Row="1"

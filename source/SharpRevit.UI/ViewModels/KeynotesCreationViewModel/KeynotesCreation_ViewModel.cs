@@ -95,6 +95,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
             });
         }
 
+
         public void KeynoteTrv_SelectedItemChanged(object keynoteObj)
         {
             if (this.SelectedFamily == null)
@@ -122,6 +123,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
 
             this.SelectedFamily.KeynoteCode = keynote.Category;
         }
+
 
         private void FilterKeynotes(string searchString)
         {
@@ -153,6 +155,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
             }
         }
 
+
         private List<CategorizedKeynoteViewModel> FilterKeynotesRecursive(IEnumerable<CategorizedKeynoteViewModel> keynotes, string searchText)
         {
             var result = new List<CategorizedKeynoteViewModel>();
@@ -178,7 +181,8 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
             return result;
         }
 
-        private IEnumerable<CategorizedKeynoteViewModel> FlattenKeynotes(IEnumerable<CategorizedKeynoteViewModel> keynotes)
+
+        private static List<CategorizedKeynoteViewModel> FlattenKeynotes(IEnumerable<CategorizedKeynoteViewModel> keynotes)
         {
             var result = new List<CategorizedKeynoteViewModel>();
 
@@ -198,6 +202,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
             return result;
         }
 
+
         partial void OnSelectedCategoryNameChanged(string oldValue, string newValue)
         {
             if (this.FamilyData == null || this.FamilyData.Count == 0)
@@ -206,137 +211,9 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
             this.FamilyCollection.View.Refresh();
         }
 
-        [RelayCommand]
-        public void SelectUniclassExcelFile()
-        {
-#if NET8_0_OR_GREATER
-            // Create an instance of the OpenFileDialog
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            // Set the filter to allow only Excel files
-            openFileDialog.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
-            openFileDialog.Title = "Select Uniclass Excel File";
-
-            // Show the dialog and check if the user selected a file
-            if (openFileDialog.ShowDialog() == true)
-            {
-                // Get the selected file path
-                string excelFile = openFileDialog.FileName;
-
-                // Set the file path in the model
-                _model.Set_UniclassExcelFile(excelFile);
-            }
-#else
-            System.Windows.Forms.OpenFileDialog openFileDialog = new();
-
-            openFileDialog.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
-            openFileDialog.Title = "Select Uniclass Excel File";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string excelFile = openFileDialog.FileName;
-
-                _model.Set_UniclassExcelFile(excelFile);
-            }
-#endif
-        }
-
-        [RelayCommand]
-        public void SelectSpecificationExcelFile()
-        {
-#if NET8_0_OR_GREATER
-            // Create an instance of the OpenFileDialog
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            // Set the filter to allow only Excel files
-            openFileDialog.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
-            openFileDialog.Title = "Select Specification Excel File";
-
-            // Show the dialog and check if the user selected a file
-            if (openFileDialog.ShowDialog() == true)
-            {
-                // Get the selected file path
-                string excelFile = openFileDialog.FileName;
-
-                // Set the file path in the model
-                _model.Set_SpecificationExcelFile(excelFile);
-            }
-#else
-            System.Windows.Forms.OpenFileDialog openFileDialog = new();
-
-            openFileDialog.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
-            openFileDialog.Title = "Select Specification Excel File";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string excelFile = openFileDialog.FileName;
-
-                _model.Set_SpecificationExcelFile(excelFile);
-            }
-#endif
-        }
-
-        [RelayCommand]
-        public void SelectKeynoteFolder()
-        {
-#if NET8_0_OR_GREATER
-            // Create a new instance of FolderBrowserDialog
-            OpenFolderDialog dialog = new OpenFolderDialog();
-            dialog.InitialDirectory = "lastOpenedFolder";
 
 
-            if ((bool)dialog.ShowDialog())
-            {
-                _model.Set_KeynoteFileFolderPath(dialog.FolderName);
-            }
-#else
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 
-            // Show the dialog and capture the result
-            DialogResult result = folderBrowserDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                // Get the selected folder path
-                _model.Set_KeynoteFileFolderPath(folderBrowserDialog.SelectedPath);
-            }
-#endif
-        }
-
-        [RelayCommand]
-        public void CreateKeynoteFile()
-        {
-
-            try
-            {
-                if (this.KeynoteFileName == null || this.KeynoteFileName == string.Empty)
-                {
-                    TaskDialog.Show("Message", $"Keynote File Name not given");
-                    return;
-                }
-
-                _model.Set_KeynoteFileName(this.KeynoteFileName);
-
-                var file = _model.CreateKeynoteFile();
-
-                if (File.Exists(file))
-                {
-                    TaskDialog.Show("Message", $"Keynote File Created => {_model.GetKeynoteFilePath()}");
-                    _fileCreated = true;
-                }
-                else
-                {
-                    TaskDialog.Show("Message", $"Unable to Create Keynote File, Check the inputs");
-                    _fileCreated = false;
-                }
-
-            }
-            catch (Exception)
-            {
-                TaskDialog.Show("Message", $"Unable to Create Keynote File, Check the inputs");
-                _fileCreated = false;
-            }
-        }
 
         [RelayCommand]
         public async Task LoadKeynoteFile()
@@ -418,6 +295,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
 
         }
 
+
         [RelayCommand]
         public async Task ApplyKeynotes()
         {
@@ -481,6 +359,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
 
         }
 
+
         [RelayCommand]
         public void ClearKeynotes()
         {
@@ -489,6 +368,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
                 f.KeynoteCode = string.Empty;
             }
         }
+
 
         private void SetFamilyTypeData(Document doc)
         {
@@ -518,7 +398,6 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
                     this.CategoryNames.Add(categoryName);
             }
 
-            this.CategoryNames.Insert(0, string.Empty);
 
             this.SelectedCategoryName = string.Empty;
 
@@ -527,6 +406,8 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
             this.CategoryNames.Clear();
 
             cNames.ForEach(cN => this.CategoryNames.Add(cN));
+
+            this.SelectedCategoryName = "Walls";
 
             vMs = vMs.OrderBy(v => v.FamilyName).ToList();
 
@@ -541,6 +422,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
 
             this.FamilyCollection.View.Refresh();
         }
+
 
         private void FamilyCollection_Filter(object sender, FilterEventArgs e)
         {
@@ -576,6 +458,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
 
             }
         }
+
 
         private void LoadTreeNodes(List<string> keynoteLines)
         {

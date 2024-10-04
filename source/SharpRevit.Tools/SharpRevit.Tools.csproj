@@ -1,0 +1,93 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<UseWPF>true</UseWPF>
+		<LangVersion>latest</LangVersion>
+		<PlatformTarget>x64</PlatformTarget>
+		<ImplicitUsings>true</ImplicitUsings>
+		<PublishAddinFiles>true</PublishAddinFiles>
+		<Configurations>Debug R22;Debug R23;Debug R24;Debug R25</Configurations>
+		<Configurations>$(Configurations);Release R22;Release R23;Release R24;Release R25</Configurations>
+	</PropertyGroup>
+
+
+	<PropertyGroup Condition="$(Configuration.Contains('R22'))">
+		<RevitVersion>2022</RevitVersion>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('R23'))">
+		<RevitVersion>2023</RevitVersion>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('R24'))">
+		<RevitVersion>2024</RevitVersion>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('R25'))">
+		<RevitVersion>2025</RevitVersion>
+		<TargetFramework>net8.0-windows</TargetFramework>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<StartAction>Program</StartAction>
+		<StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
+		<StartArguments>/language ENG</StartArguments>
+		<ApplicationManifest>SharpRevit_Tools.addin</ApplicationManifest>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Icons\ACC_Hub_32x32.png" />
+	  <None Remove="Resources\Icons\BrickCalculator_32x32.png" />
+	  <None Remove="Resources\Icons\Keynote_32x32.png" />
+	  <None Remove="Resources\Icons\SharedParameters_32x32.png" />
+	  <None Remove="Resources\Icons\SP_16x16.png" />
+	  <None Remove="Resources\Icons\Validation_32x32.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Nice3point.Revit.Build.Tasks" Version="1.*" />
+		<PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*-*" />
+		<PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*-*" />
+		<PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*-*" />
+		<PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*-*" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="2.*" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\Icons\ACC_Hub_32x32.png" />
+		<EmbeddedResource Include="Resources\Icons\BrickCalculator_32x32.png" />
+		<EmbeddedResource Include="Resources\Icons\icon_32x32.png" />
+		<EmbeddedResource Include="Resources\Icons\Keynote_32x32.png" />
+		<EmbeddedResource Include="Resources\Icons\SharedParameters_32x32.png" />
+		<EmbeddedResource Include="Resources\Icons\SP_16x16.png" />
+		<EmbeddedResource Include="Resources\Icons\Validation_32x32.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\RevitCore\RevitCore.csproj" />
+	  <ProjectReference Include="..\SharpRevit.UI\SharpRevit.UI.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Properties\Settings.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Settings.settings</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
+
+
+</Project>

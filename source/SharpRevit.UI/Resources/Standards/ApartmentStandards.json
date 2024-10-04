@@ -1,0 +1,125 @@
+{
+  "ParameterNames": {
+    "ApartmentType": "Dwelling Type",
+    "RoomType": "Name"
+  },
+  "ApartmentTypes": {
+    "Studio": "STUDIO",
+    "OneBedroomOnePerson": "1 BED(1)",
+    "OneBedroomwoPerson": "1 BED(2)",
+    "TwoBedroomThreePerson": "2 BED(3)",
+    "TwoBedroomFourPerson": "2 BED(4)",
+    "ThreeBedroomFivePerson": "3 BED(5)",
+    "ThreeBedroomSixPerson": "3 BED(6)"
+  },
+  "RoomTypes": {
+    "KitcheLivingDinning": "KLD",
+    "Kitchen": "Kitchen",
+    "LivingDinning": "LD",
+    "StorageRoom": "STORAGE",
+    "Bedroom": "BEDROOM",
+    "Bedroom_1": "BEDROOM 1",
+    "Bedroom_2": "BEDROOM 2",
+    "Bedroom_3": "BEDROOM 3",
+    "Balcony": "BALCONY"
+  },
+
+  "BedroomInfo": {
+    "SingleBedMinimumArea": 7.1,
+    "SingleBedMinimumWidth": 2.1,
+    "DoubleBedMinimumArea": 11.4,
+    "DoubleBedMinimumWidth": 2.8
+  },
+  "AdditionalInfo": {
+
+    "AdditionalApartmentAreaPercentage": 10.0,
+    "MaxStoreRoomAreaAllowed":  3.5
+  },
+
+  "ApartmentValidationInfo": {
+    "STUDIO": {
+      "MinimumFloorArea": 37.0,
+      "AdditionalPercentageAllowed": 10,
+      "MinimumLivingDinningKitchenWidth": 4.0,
+      "MinimumLivingDinningKitchenArea": 37.0,
+      "MinimumAggregateBedroomAreas": [ 37 ],
+      "MinimumBedroomWidth": 4.0,
+      "MinimumStorageArea": 3.0,
+      "MinimumBlaconyArea": 4.0,
+      "MinimumBalconyWidth": 1.5,
+      "EnclosedKitchenArea": 6.5
+    },
+    "1 BED(1)": {
+      "MinimumFloorArea": 45.0,
+      "AdditionalPercentageAllowed": 10,
+      "MinimumLivingDinningKitchenWidth": 3.3,
+      "MinimumLivingDinningKitchenArea": 23.0,
+      "MinimumAggregateBedroomAreas": [ 7.1 ],
+      "MinimumBedroomWidths": [ 2.1 ],
+      "MinimumStorageArea": 3.0,
+      "MinimumBlaconyArea": 5.0,
+      "MinimumBalconyWidth": 1.5,
+      "EnclosedKitchenArea": 6.5
+    },
+    "1 BED(2)": {
+      "MinimumFloorArea": 45.0,
+      "AdditionalPercentageAllowed": 10,
+      "MinimumLivingDinningKitchenWidth": 3.3,
+      "MinimumLivingDinningKitchenArea": 23.0,
+      "MinimumAggregateBedroomAreas": [ 11.4 ],
+      "MinimumBedroomWidths": [ 2.8 ],
+      "MinimumStorageArea": 3.0,
+      "MinimumBlaconyArea": 5.0,
+      "MinimumBalconyWidth": 1.5,
+      "EnclosedKitchenArea": 6.5
+    },
+    "2 BED(3)": {
+      "MinimumFloorArea": 63.0,
+      "AdditionalPercentageAllowed": 10,
+      "MinimumLivingDinningKitchenWidth": 3.6,
+      "MinimumLivingDinningKitchenArea": 28.0,
+      "MinimumAggregateBedroomAreas": [ 7.1, 13.0 ],
+      "MinimumBedroomWidths": [ 2.1, 2.8 ],
+      "MinimumStorageArea": 5.0,
+      "MinimumBlaconyArea": 6.0,
+      "MinimumBalconyWidth": 1.5,
+      "EnclosedKitchenArea": 6.5
+    },
+    "2 BED(4)": {
+      "MinimumFloorArea": 73.0,
+      "AdditionalPercentageAllowed": 10,
+      "MinimumLivingDinningKitchenWidth": 3.6,
+      "MinimumLivingDinningKitchenArea": 30.0,
+      "MinimumAggregateBedroomAreas": [ 11.4, 13.0 ],
+      "MinimumBedroomWidths": [ 2.8, 2.8 ],
+      "MinimumStorageArea": 6.0,
+      "MinimumBlaconyArea": 7.0,
+      "MinimumBalconyWidth": 1.5,
+      "EnclosedKitchenArea": 6.5
+    },
+    "3 BED(5)": {
+      "MinimumFloorArea": 90.0,
+      "AdditionalPercentageAllowed": 10,
+      "MinimumLivingDinningKitchenWidth": 3.8,
+      "MinimumLivingDinningKitchenArea": 34.0,
+      "MinimumAggregateBedroomAreas": [ 7.1, 11.4, 13.0 ],
+      "MinimumBedroomWidths": [ 2.1, 2.8, 2.8 ],
+      "MinimumStorageArea": 9.0,
+      "MinimumBlaconyArea": 9.0,
+      "MinimumBalconyWidth": 1.5,
+      "EnclosedKitchenArea": 6.5
+    },
+    "3 BED(6)": {
+      "MinimumFloorArea": 90.0,
+      "AdditionalPercentageAllowed": 10,
+      "MinimumLivingDinningKitchenWidth": 3.8,
+      "MinimumLivingDinningKitchenArea": 34.0,
+      "MinimumAggregateBedroomAreas": [ 11.4, 11.4, 13.0 ],
+      "MinimumBedroomWidths": [ 2.8, 2.8, 2.8 ],
+      "MinimumStorageArea": 9.0,
+      "MinimumBlaconyArea": 9.0,
+      "MinimumBalconyWidth": 1.5,
+      "EnclosedKitchenArea": 6.5
+    }
+  }
+}

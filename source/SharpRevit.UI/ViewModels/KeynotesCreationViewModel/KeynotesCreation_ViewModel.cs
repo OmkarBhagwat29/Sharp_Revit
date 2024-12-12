@@ -17,6 +17,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using RevitCore.Utils;
+using SharpRevit.UI.helpers;
+
 
 
 
@@ -35,6 +37,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
 
   
         private readonly AsyncEventHandler _asyncExternalHandler = new();
+        private readonly ActionEventHandler _externalHandler = new();
 
 
         private KeynotesCreationModel _model;
@@ -73,7 +76,7 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
             this.FamilyCollection.View.Refresh();
         }
 
-
+        //Document doc; 
         public KeynotesCreation_ViewModel()
         {
             _model = new();
@@ -297,6 +300,8 @@ namespace SharpRevit.UI.ViewModels.KeynotesCreationViewModel
         [RelayCommand]
         public async Task ApplyKeynotes()
         {
+            MethodRunner.Test(_externalHandler);
+
             var famKeynotes = this.FamilyData.Where(f => f.KeynoteCode != null && f.KeynoteCode != string.Empty).ToList();
 
             if (famKeynotes.Count == 0)

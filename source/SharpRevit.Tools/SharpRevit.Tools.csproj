@@ -38,6 +38,8 @@
 	<ItemGroup>
 	  <None Remove="Resources\Icons\ACC_Hub_32x32.png" />
 	  <None Remove="Resources\Icons\BrickCalculator_32x32.png" />
+	  <None Remove="Resources\Icons\FireCompliance_28x28.png" />
+	  <None Remove="Resources\Icons\FireCompliance_32x32.png" />
 	  <None Remove="Resources\Icons\Keynote_32x32.png" />
 	  <None Remove="Resources\Icons\SharedParameters_32x32.png" />
 	  <None Remove="Resources\Icons\SP_16x16.png" />
@@ -45,23 +47,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Nice3point.Revit.Build.Tasks" Version="2.0.2" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3179.45" />
+		<PackageReference Include="Nice3point.Revit.Build.Tasks" Version="1.*" />
 		<PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*-*" />
 		<PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*-*" />
 		<PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*-*" />
 		<PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*-*" />
-		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
-		<PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" Condition="$(RevitVersion) == '2025'" />
-		<PackageReference Include="Serilog.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" Condition="$(RevitVersion) == '2025'" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
-		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="2.*" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.*" Condition="$(RevitVersion) == '2025'" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" Condition="$(RevitVersion) != '' And $(RevitVersion) &lt; '2025'" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 	</ItemGroup>
 
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\Icons\ACC_Hub_32x32.png" />
 		<EmbeddedResource Include="Resources\Icons\BrickCalculator_32x32.png" />
+		<EmbeddedResource Include="Resources\Icons\FireCompliance_28x28.png" />
+		<EmbeddedResource Include="Resources\Icons\FireCompliance_32x32.png" />
 		<EmbeddedResource Include="Resources\Icons\icon_32x32.png" />
 		<EmbeddedResource Include="Resources\Icons\Keynote_32x32.png" />
 		<EmbeddedResource Include="Resources\Icons\SharedParameters_32x32.png" />
@@ -88,6 +93,5 @@
 	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
 	  </None>
 	</ItemGroup>
-
 
 </Project>

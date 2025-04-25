@@ -1,12 +1,14 @@
 ﻿
+
+
+
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
-using SharpRevit.UI.Commands;
-using SharpRevit.UI.ViewModels;
 using Nice3point.Revit.Toolkit.External;
 using RevitCore.Utils;
-using RevitCore.Extensions;
+using SharpRevit.UI.Commands;
 using System.Reflection;
+
 
 namespace SharpRevit.Commands
 {
@@ -15,8 +17,9 @@ namespace SharpRevit.Commands
     /// </summary>
     [UsedImplicitly]
     [Transaction(TransactionMode.Manual)]
-    public class BrickEvaluator_Command : ExternalCommand
+    public class FireCompliance_Command : ExternalCommand
     {
+
         public override void Execute()
         {
 			try
@@ -26,7 +29,10 @@ namespace SharpRevit.Commands
                 var uiDoc = uiApp.ActiveUIDocument;
                 var doc = uiDoc.Document;
 
-                Host.GetService<BrickEvaluatorShowWindow>().Execute();
+                //TaskDialog.Show("Fire Compliant", "Hello Fire, Are you compliant");
+
+                Host.GetService<FireComplianceShowWindow>().Execute();
+
             }
 			catch
 			{
@@ -34,14 +40,15 @@ namespace SharpRevit.Commands
 			}
         }
 
-        public static void CreateBrickEvaluatorButton(RibbonPanel panel)
+
+        public static void CreateFireComplianceButton(RibbonPanel panel)
         {
             var assembly = Assembly.GetExecutingAssembly();
             panel.AddItem(new PushButtonData(MethodBase.GetCurrentMethod().DeclaringType?.Name,
-                $"Brick\nEvaluator", assembly.Location, MethodBase.GetCurrentMethod().DeclaringType?.FullName)
+                $"Compliance", assembly.Location, MethodBase.GetCurrentMethod().DeclaringType?.FullName)
             {
-                ToolTip = "Brick Evaluator",
-                LargeImage = ImageUtils.LoadImage(assembly, "BrickCalculator_32x32.png")
+                ToolTip = "check fire safety compliance",
+                LargeImage = ImageUtils.LoadImage(assembly, "FireCompliance_28x28.png")
             });
 
         }

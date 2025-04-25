@@ -7,6 +7,27 @@ namespace RevitCore.Extensions
 {
     public static class DocumentExtension
     {
+        public static Line BakeLine(this Document doc, XYZ origin, XYZ direction, double length)
+        {
+            // Normalize direction vector to ensure correct length
+            direction = direction.Normalize();
+
+            // Calculate end point
+            XYZ endPoint = origin + direction.Multiply(length);
+
+            // Create geometry line
+            Line geomLine = Line.CreateBound(origin, endPoint);
+
+
+            Plane plane = Plane.CreateByNormalAndOrigin(XYZ.BasisZ, origin); 
+            SketchPlane sketchPlane = SketchPlane.Create(doc, plane);
+
+            doc.Create.NewModelCurve(geomLine, sketchPlane);
+
+            return geomLine;
+        }
+
+
         public static DirectShape CreateDirectShape(this Document doc, List<GeometryObject> geometryObjects,
             BuiltInCategory category = BuiltInCategory.OST_GenericModel)
         {

@@ -16,6 +16,8 @@ namespace SharpRevit.Tools
             {
                 Host.Start();
 
+                this.CreateNeomBIMStartUp();
+
                 //Create Tab
                 string tabName = "Sharp Revit Tools";
                 Application.CreateRibbonTab(tabName);
@@ -47,6 +49,25 @@ namespace SharpRevit.Tools
         public override void OnShutdown()
         {
             Host.Stop();
+        }
+
+        void CreateNeomBIMStartUp()
+        {
+            try
+            {
+                string tabName = "NEO BIM";
+                Application.CreateRibbonTab(tabName);
+
+                string compliancePanelName = "Check Fire Safety";
+
+                var panel = Application.CreatePanel(compliancePanelName, tabName);
+
+                FireCompliance_Command.CreateFireComplianceButton(panel);
+            }
+            catch
+            {
+
+            }
         }
 
     }

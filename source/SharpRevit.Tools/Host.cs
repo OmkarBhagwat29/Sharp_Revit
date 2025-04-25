@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using System.IO;
 using System.Reflection;
+using SharpRevit.UI.Views.Compliance.Fire;
+using SharpRevit.UI.ViewModels.FireCompliance;
 
 
 namespace SharpRevit
@@ -42,6 +44,9 @@ namespace SharpRevit
             //add here services like views and VM
              builder.Services.AddTransient<IWindowService, WindowService>();
 
+            builder.Services.AddTransient<FireComplianceShowWindow>();
+            builder.Services.AddTransient<FireCompliance_Window>();
+            builder.Services.AddTransient<FireCompliance_ViewModel>();
 
             builder.Services.AddTransient<BrickEvaluatorShowWindow>();
             builder.Services.AddTransient<BrickWindow>();

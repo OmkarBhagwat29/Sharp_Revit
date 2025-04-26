@@ -4,7 +4,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using Nice3point.Revit.Toolkit.External.Handlers;
+using RevitCore.Compliance.FireSafety;
 using RevitCore.Entities;
+using RevitCore.Extensions;
+using RevitCore.GeometryUtils;
 using SharpRevit.UI.Services;
 using SharpRevit.UI.Views.Compliance.Fire;
 
@@ -35,7 +38,8 @@ namespace SharpRevit.UI.ViewModels.FireCompliance
 
             _externalHandler.Raise((app) =>
             {
-                FCHelper.Sys = new RevitCore.Compliance.FireSafety.FireSafetySystem(app.ActiveUIDocument.Document);
+                FCHelper.Sys = new FireSafetySystem(app.ActiveUIDocument.Document);
+                
             });
 
         }
@@ -68,7 +72,27 @@ namespace SharpRevit.UI.ViewModels.FireCompliance
                             _externalHandler.Raise((uiApp) =>
                             {
                                 Door.BakeDoorsDirectionLine(uiApp.ActiveUIDocument.Document,
-                                    [.. FCHelper.Sys.RoomsDoorsRelations.SelectMany(r => r.GetFilteredDoorsByDirection())]);
+                                    [.. FCHelper.Sys.RoomsDoorsRelations
+                                    .SelectMany(r => r.GetFilteredDoorsByDirection())]);
+
+
+                                uiApp.ActiveUIDocument.Document.UseTransaction(() =>
+                                {
+                                    //Door.Solids.ForEach(s => s.Visualize(uiApp.ActiveUIDocument.Document));
+
+                                    Door.Curves.ForEach(c =>
+                                    {
+
+                                        var cv = c.CreateDetailCurve(uiApp.ActiveUIDocument.Document, uiApp.ActiveUIDocument.ActiveView);
+                                    });
+
+                                    Door.Points.ForEach(p =>
+                                    {
+
+                                        p.VisualizePosition(uiApp.ActiveUIDocument.Document);
+                                    });
+
+                                }, "Bake");
 
                             });
 
@@ -94,6 +118,10 @@ namespace SharpRevit.UI.ViewModels.FireCompliance
                            } );
 
                             FCHelper.EvaluateTravelDistance(distance);
+
+                            var data = FCHelper.GetReport();
+                            var sendData = JsonSerializer.Serialize(new { eventType = "compliance_report", payload = data });
+                            this._webView.CoreWebView2.PostWebMessageAsJson(sendData);
                         }
                         break;
                 }

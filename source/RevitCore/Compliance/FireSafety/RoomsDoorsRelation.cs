@@ -1,7 +1,6 @@
 ﻿using Autodesk.Revit.DB.Architecture;
 using RevitCore.Compliance.FireSafety.Models;
 using RevitCore.Entities;
-using System.Runtime.CompilerServices;
 
 
 namespace RevitCore.Compliance.FireSafety
@@ -34,7 +33,7 @@ namespace RevitCore.Compliance.FireSafety
             {
                 door.SetDoorOpeningState();
 
-                if (door.OpeningState.IsDoorFacingOutside)
+                if (door.OpeningState.IsDoorOnExterior)
                 {
                     outsideDoorIds.Add(door.Instance.Id);
                 }
@@ -55,6 +54,7 @@ namespace RevitCore.Compliance.FireSafety
 
         public void FilterDoorsBasedOnDistance(double distance)
         {
+            this.ComplianceData.Clear();
             var doors = GetFilteredDoorsByDirection();
 
             var filteredDistanceDoorIds = new List<ElementId>();
@@ -77,6 +77,10 @@ namespace RevitCore.Compliance.FireSafety
 
         private static FireSafetyComplianceModel ValidateBasedOnDistanced(Room room, List<Door> doors,double distance)
         {
+            if (room.Name == "Room R156")
+            {
+                
+            }
             var model = new FireSafetyComplianceModel()
             {
                 RoomName = room.Name,
@@ -124,7 +128,7 @@ namespace RevitCore.Compliance.FireSafety
                         model.IsComplaint = false;
                         model.DoorId=door.Instance.Id;
                         model.Explanation = $"Door Id: {door.Instance.Id} ({Math.Round(currentDistance, 2)} mts away) " +
-                            $"does not open outside.";
+                            $"Exit door found but the door does not open outward.";
                     }
                 }
             }
@@ -133,18 +137,19 @@ namespace RevitCore.Compliance.FireSafety
             {
                 //not complaint
                 model.IsComplaint = false;
-                model.Explanation = $"No Exterior door found within {distance} mts." +
+                model.Explanation = $"No Exit door found within {distance} mts." +
                     $"Closest Door to the room ->\n" +
                     $"Door ID: {closedDoorId} ({Math.Round(minDistance, 2)} mts away)";
+            }
+
+            if (!model.IsComplaint)
+            {
+                
             }
 
             return model;
         }
 
-        private XYZ GetRoomCenter(Room room)
-        {
-            var bbox = room.get_BoundingBox(null);
-            return (bbox.Min + bbox.Max) / 2.0;
-        }
+
     }
 }

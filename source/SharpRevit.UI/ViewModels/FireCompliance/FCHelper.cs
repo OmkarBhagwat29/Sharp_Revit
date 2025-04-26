@@ -1,5 +1,8 @@
-﻿using RevitCore.Compliance.FireSafety;
+﻿
 
+
+
+using RevitCore.Compliance.FireSafety;
 
 namespace SharpRevit.UI.ViewModels.FireCompliance
 {
@@ -41,6 +44,7 @@ namespace SharpRevit.UI.ViewModels.FireCompliance
 
                 foreach (var item in data)
                 {
+
                     var model = new RoomComplianceModel()
                     {
                         RoomName = item.RoomName,
@@ -55,7 +59,7 @@ namespace SharpRevit.UI.ViewModels.FireCompliance
 
             }
 
-            return models;
+            return models.OrderBy(m => m.RoomName).ToList();
         }
     }
 }

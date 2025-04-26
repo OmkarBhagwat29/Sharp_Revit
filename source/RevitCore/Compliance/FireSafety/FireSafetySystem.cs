@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB.Architecture;
+using RevitCore.Compliance.FireSafety;
 using RevitCore.Compliance.FireSafety.Rules;
 using RevitCore.Entities;
 using RevitCore.Extensions;

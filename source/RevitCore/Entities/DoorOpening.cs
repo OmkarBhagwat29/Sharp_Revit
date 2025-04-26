@@ -1,6 +1,4 @@
-﻿
-
-namespace RevitCore.Entities
+﻿namespace RevitCore.Entities
 {
     public enum DoorOpening
     {

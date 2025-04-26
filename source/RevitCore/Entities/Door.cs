@@ -1,13 +1,17 @@
 ﻿using Autodesk.Revit.DB.Architecture;
-using RevitCore.Compliance.FireSafety;
 using RevitCore.Compliance.FireSafety.Rules;
 using RevitCore.Extensions;
+using RevitCore.Extensions.PointInPoly;
+using RevitCore.GeometryUtils;
+
 
 
 namespace RevitCore.Entities
 {
     public class Door
     {
+
+        public static Document Doc { get; set; }
         public FamilyInstance Instance { get; set; }
 
         public ElementId HostId { get; set; }
@@ -18,53 +22,210 @@ namespace RevitCore.Entities
 
         public Door()
         {
-           
+
         }
 
         public void SetDoorOpeningState()
         {
-           var fromRm =  this.Instance.FromRoom;
-            var toRm = this.Instance.ToRoom;
+            //if (Instance.Id.Value == 351396)
+            //{
+
+            //}
+
+            Curves.Clear();
+
+            var fromRm = Instance.FromRoom;
+            var toRm = Instance.ToRoom;
 
             if (fromRm is not null)
             {
-                this.OpeningState.HasFromRoom = true;
+                OpeningState.HasFromRoom = true;
             }
 
             if (toRm is not null)
             {
-                this.OpeningState.HasToRoom = true;
+                OpeningState.HasToRoom = true;
             }
 
-            if (this.OpeningState.HasFromRoom && this.OpeningState.HasToRoom)
+            if (OpeningState.HasFromRoom && OpeningState.HasToRoom)
             {
-                this.OpeningState.IsDoorFacingOutside = false;
-                this.OpeningState.IsDoorOnExterior = false;
+                OpeningState.IsDoorFacingOutside = false;
+                OpeningState.IsDoorOnExterior = false;
+                this.OpeningState.OpeningDirection = Instance.FacingOrientation;
+
+                return;
             }
-            else if (this.OpeningState.HasFromRoom && !this.OpeningState.HasToRoom)
+
+
+            if (toRm is not null && fromRm is not null)
+                return;
+
+            this.OpeningState.OpeningDirection = this.Instance.FacingOrientation;
+
+            Room testRoom = null;
+            if (toRm is null)
             {
+                //test with from room
+                testRoom = fromRm;
+            }
+            else
+            {
+                testRoom = toRm;
+            }
+
+           var isIn = CheckDoorSwingInRoom(this.Instance, testRoom);
+
+            if (isIn)
+            {
+                this.OpeningState.IsDoorOnExterior = true;
+                this.OpeningState.IsDoorFacingOutside = false;
+            }
+            else
+            {
+                this.OpeningState.IsDoorOnExterior = true;
                 this.OpeningState.IsDoorFacingOutside = true;
-                this.OpeningState.IsDoorOnExterior = true;
             }
-            else if (!this.OpeningState.HasFromRoom && this.OpeningState.HasToRoom)
-            {
-                this.OpeningState.IsDoorFacingOutside = false;
-                this.OpeningState.IsDoorOnExterior = true;
-            }
-
-            if (this.OpeningState.IsDoorFacingOutside)
-                this.OpeningState.OpeningDirection = this.Instance.FacingOrientation;
-            else if(this.OpeningState.IsDoorOnExterior)
-                this.OpeningState.OpeningDirection = -this.Instance.FacingOrientation;
 
         }
 
+        private XYZ GetRoomCenter(Room room)
+        {
+            var bbox = room.get_BoundingBox(null);
+            return (bbox.Min + bbox.Max) / 2.0;
+        }
 
+
+        public static List<Solid> Solids = [];
+        public static List<Curve> Curves = [];
+
+        public static List<XYZ> Points = [];
+
+        public static bool IsDoorOpeningInsideRoom(FamilyInstance door, Room room)
+        {
+
+
+            // Get door geometry
+            Options options = new Options
+            {
+                ComputeReferences = true,
+                IncludeNonVisibleObjects = true,
+                DetailLevel = ViewDetailLevel.Fine
+            };
+
+            var solids = door.get_Geometry(options)
+                .Cast<GeometryInstance>()
+                .SelectMany(gI => gI.GetInstanceGeometry().OfType<Solid>())
+                .ToList();
+
+            var curves = door.get_Geometry(options)
+    .Cast<GeometryInstance>()
+    .SelectMany(gI => gI.GetInstanceGeometry().OfType<Curve>())
+    .ToList();
+
+
+            Door.Solids = solids;
+            Door.Curves = curves;
+
+            var opt = new SpatialElementBoundaryOptions()
+            { SpatialElementBoundaryLocation = SpatialElementBoundaryLocation.Finish };
+
+            //var points = 
+            int count = 0;
+            foreach (var curve in curves)
+            {
+                var midPt = curve.Evaluate(0.5, true);
+
+                var inside = room.RoomContains(midPt, opt);
+
+               //room.IsPointInRoom(midPt);
+                if (inside)
+                {
+                    count++;
+                    continue;
+                }
+            }
+
+            // If no arc found, you could decide to assume false or handle differently
+            return false;
+        }
+
+        public static bool CheckDoorSwingInRoom(FamilyInstance door, Room room)
+        {
+            Options options = new Options();
+            options.IncludeNonVisibleObjects = true;
+            options.View = door.Document.ActiveView; // Current Plan View
+
+            Transform doorTransform = door.GetTotalTransform();
+
+            var facingFlipped = door.FacingFlipped;
+            var handFlipped = door.HandFlipped;
+            // Apply Facing Flip
+            if (door.FacingFlipped && !door.HandFlipped)
+            {
+                // Mirror across X axis (local family coordinates)
+                Plane planeX = Plane.CreateByNormalAndOrigin(XYZ.BasisY, XYZ.Zero);
+                Transform mirrorFacing = Transform.CreateReflection(planeX);
+                doorTransform = doorTransform.Multiply(mirrorFacing);
+            }
+            else if(!door.FacingFlipped && handFlipped)
+            {
+                Plane planeX = Plane.CreateByNormalAndOrigin(XYZ.BasisY, XYZ.Zero);
+                Transform mirrorFacing = Transform.CreateReflection(planeX);
+                doorTransform = doorTransform.Multiply(mirrorFacing);
+            }
+
+
+
+                FamilySymbol symbol = door.Symbol;
+            // Get Symbolic Geometry
+            GeometryElement geomElement = symbol.get_Geometry(options);
+            bool isIn = false;
+            bool isOutside = false;
+            foreach (GeometryObject geomObj in geomElement)
+            {
+                if (geomObj is Curve curve)
+                {
+                    if (curve is Arc arc)
+                    {
+                        // 1. Transform the arc into model space
+                        Curve transformedArc = arc.CreateTransformed(doorTransform);
+                        Curves.Add(transformedArc);
+
+
+                        XYZ curverCenter = transformedArc.Evaluate(0.5, true);
+
+                        var isInside = room.IsPointInRoom(curverCenter);
+
+                        if (isInside)
+                        {
+                            isIn = true;
+
+                        }
+                        else
+                        {
+                            isOutside = true;
+                        }
+                    }
+
+                }
+
+            }
+
+
+            if (isIn && isOutside)
+            {
+                //it is double side opening door and valid for safety
+                return false;
+            }
+
+                return isIn;
+        }
 
         #region Debug
-        public static void BakeDoorsDirectionLine(Document doc,List<Door> doors)
+        public static void BakeDoorsDirectionLine(Document doc, List<Door> doors)
         {
-            doc.UseTransaction(() => {
+            doc.UseTransaction(() =>
+            {
 
                 foreach (var door in doors)
                 {

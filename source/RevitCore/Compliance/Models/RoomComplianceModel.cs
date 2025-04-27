@@ -16,6 +16,8 @@ namespace RevitCore.Compliance.FireSafety.Models
 
         public bool IsComplaint { get; set; }
 
+        public bool IsSemiComplaint { get; set; }
+
         public string Explanation { get; set; } = "Explanation not available";
     }
 }

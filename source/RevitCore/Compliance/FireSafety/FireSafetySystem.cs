@@ -33,9 +33,14 @@ namespace RevitCore.Compliance.FireSafety
             this.DoorCollection.Clear();    
         }
 
+        public ViewPlan FloorView;
+
         public void Evaluate()
         {
             this.Clear();
+
+            this.FloorView = Doc.GetAnyFloorPlanView();
+
             this.SetDoorsByLevel();
             this.SetRoomsByLevel();
 
@@ -64,7 +69,7 @@ namespace RevitCore.Compliance.FireSafety
         {
             foreach (var rel in RoomsDoorsRelations)
             {
-                rel.FilterDoorsBasedOnDoorDirection(DoorOpening.Outside);
+                rel.FilterDoorsBasedOnDoorDirection(this.FloorView);
 
                 rel.FilterDoorsBasedOnDistance(this.DoorDistanceThreshold);
             }

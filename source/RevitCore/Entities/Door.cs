@@ -25,12 +25,8 @@ namespace RevitCore.Entities
 
         }
 
-        public void SetDoorOpeningState()
+        public void SetDoorOpeningState(ViewPlan floorView)
         {
-            //if (Instance.Id.Value == 351396)
-            //{
-
-            //}
 
             Curves.Clear();
 
@@ -73,7 +69,7 @@ namespace RevitCore.Entities
                 testRoom = toRm;
             }
 
-           var isIn = CheckDoorSwingInRoom(this.Instance, testRoom);
+           var isIn = CheckDoorSwingInRoom(this.Instance, testRoom,floorView);
 
             if (isIn)
             {
@@ -88,11 +84,6 @@ namespace RevitCore.Entities
 
         }
 
-        private XYZ GetRoomCenter(Room room)
-        {
-            var bbox = room.get_BoundingBox(null);
-            return (bbox.Min + bbox.Max) / 2.0;
-        }
 
 
         public static List<Solid> Solids = [];
@@ -102,8 +93,6 @@ namespace RevitCore.Entities
 
         public static bool IsDoorOpeningInsideRoom(FamilyInstance door, Room room)
         {
-
-
             // Get door geometry
             Options options = new Options
             {
@@ -149,11 +138,11 @@ namespace RevitCore.Entities
             return false;
         }
 
-        public static bool CheckDoorSwingInRoom(FamilyInstance door, Room room)
+        public static bool CheckDoorSwingInRoom(FamilyInstance door, Room room,ViewPlan floorView)
         {
             Options options = new Options();
             options.IncludeNonVisibleObjects = true;
-            options.View = door.Document.ActiveView; // Current Plan View
+            options.View = floorView; // Current Plan View
 
             Transform doorTransform = door.GetTotalTransform();
 

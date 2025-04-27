@@ -66,44 +66,21 @@ namespace SharpRevit.UI.ViewModels.FireCompliance
                 switch (command)
                 {
                     case "EVALUATE":
-                    {                        
-                            FCHelper.Evaluate();
+                        {
 
-                            _externalHandler.Raise((uiApp) =>
+                            _asyncExternalHandler.RaiseAsync((uiApp) =>
                             {
-                                Door.BakeDoorsDirectionLine(uiApp.ActiveUIDocument.Document,
-                                    [.. FCHelper.Sys.RoomsDoorsRelations
-                                    .SelectMany(r => r.GetFilteredDoorsByDirection())]);
-
-
-                                uiApp.ActiveUIDocument.Document.UseTransaction(() =>
-                                {
-                                    //Door.Solids.ForEach(s => s.Visualize(uiApp.ActiveUIDocument.Document));
-
-                                    Door.Curves.ForEach(c =>
-                                    {
-
-                                        var cv = c.CreateDetailCurve(uiApp.ActiveUIDocument.Document, uiApp.ActiveUIDocument.ActiveView);
-                                    });
-
-                                    Door.Points.ForEach(p =>
-                                    {
-
-                                        p.VisualizePosition(uiApp.ActiveUIDocument.Document);
-                                    });
-
-                                }, "Bake");
+                                FCHelper.Evaluate(uiApp.ActiveUIDocument.Document);
+                                var data = FCHelper.GetReport();
+                                var sendData = JsonSerializer.Serialize(new { eventType = "compliance_report", payload = data });
+                                this._webView.CoreWebView2.PostWebMessageAsJson(sendData);
 
                             });
-
-                            var data = FCHelper.GetReport();
-                            var sendData = JsonSerializer.Serialize(new { eventType = "compliance_report", payload = data });
-                            this._webView.CoreWebView2.PostWebMessageAsJson(sendData);
-                        } 
+                        }
                         break;
                     case "RESET":
                         {
-                            FCHelper.Reset();
+                            _externalHandler.Raise((uiApp) => { FCHelper.Reset(uiApp.ActiveUIDocument.Document); }); 
                         }
                         break;
                     case "TRAVEL_DISTANCE":
@@ -113,15 +90,15 @@ namespace SharpRevit.UI.ViewModels.FireCompliance
 
                            _asyncExternalHandler.RaiseAsync((uiApp)=> {
 
-                               //TaskDialog.Show("Distance", $"New Distance is: {distance}");
+                               FCHelper.EvaluateTravelDistance(uiApp.ActiveUIDocument.Document, distance);
+
+                               var data = FCHelper.GetReport();
+                               var sendData = JsonSerializer.Serialize(new { eventType = "compliance_report", payload = data });
+                               this._webView.CoreWebView2.PostWebMessageAsJson(sendData);
 
                            } );
 
-                            FCHelper.EvaluateTravelDistance(distance);
 
-                            var data = FCHelper.GetReport();
-                            var sendData = JsonSerializer.Serialize(new { eventType = "compliance_report", payload = data });
-                            this._webView.CoreWebView2.PostWebMessageAsJson(sendData);
                         }
                         break;
                 }

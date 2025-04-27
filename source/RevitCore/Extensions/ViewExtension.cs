@@ -18,6 +18,58 @@ namespace RevitCore.Extensions
             return vP;
         }
 
+        public static bool TryGetNameView(this Document doc, string viewName, out View view)
+        {
+            view = new FilteredElementCollector(doc)
+                        .OfClass(typeof(View))
+                        .Cast<View>()
+                        .FirstOrDefault(v => v.Name.Equals(viewName, System.StringComparison.OrdinalIgnoreCase));
+
+
+            if (view == null)
+                return false;
+
+            return true;
+        }
+
+
+        public static ViewPlan CreateFloorPlan(this Document doc, ElementId levelId, string viewPlanName)
+        {
+            // Find a valid ViewFamilyType for Floor Plans
+            var viewFamilyType = new FilteredElementCollector(doc)
+                .OfClass(typeof(ViewFamilyType))
+                .Cast<ViewFamilyType>()
+                .FirstOrDefault(vft => vft.ViewFamily == ViewFamily.FloorPlan);
+
+            if (viewFamilyType == null)
+                throw new System.Exception("No Floor Plan ViewFamilyType found in the project.");
+
+            ViewPlan newFloorPlan = ViewPlan.Create(doc, viewFamilyType.Id, levelId);
+            newFloorPlan.Name = viewPlanName;
+            
+            return newFloorPlan;
+        }
+
+        public static ViewPlan GetAnyFloorPlanView(this Document doc, string viewName = null, ElementId levelId = null)
+        {
+            var collector = new FilteredElementCollector(doc)
+                .OfClass(typeof(ViewPlan))
+                .Cast<ViewPlan>()
+                .Where(vp => vp.ViewType == ViewType.FloorPlan);
+
+            if (!string.IsNullOrEmpty(viewName))
+            {
+                collector = collector.Where(vp => vp.Name.Equals(viewName, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (levelId != null)
+            {
+                collector = collector.Where(vp => vp.GenLevel?.Id == levelId);
+            }
+
+            return collector.FirstOrDefault();
+        }
+
         public static View3D CreateView3D(this Document doc, View3DType view3dType, string viewName)
         {
             var viewFamilyType = doc.GetElements<ViewFamilyType>(e => e.ViewFamily == ViewFamily.ThreeDimensional)

@@ -10,7 +10,7 @@ namespace SharpRevit.UI.ViewModels.FireCompliance
     {
         Compliant,
         NonCompliant,
-        Unknown
+        SemiCompliant
     }
     public class RoomComplianceModel
     {

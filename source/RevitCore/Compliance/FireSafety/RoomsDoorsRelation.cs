@@ -26,12 +26,12 @@ namespace RevitCore.Compliance.FireSafety
             this.Doors = _doors;
         }
 
-        public void FilterDoorsBasedOnDoorDirection(DoorOpening opening, XYZ target = null)
+        public void FilterDoorsBasedOnDoorDirection(ViewPlan floorView, XYZ target = null)
         {
             List<ElementId> outsideDoorIds = [];
             foreach (var door in Doors)
             {
-                door.SetDoorOpeningState();
+                door.SetDoorOpeningState(floorView);
 
                 if (door.OpeningState.IsDoorOnExterior)
                 {
@@ -127,6 +127,7 @@ namespace RevitCore.Compliance.FireSafety
                     {
                         model.IsComplaint = false;
                         model.DoorId=door.Instance.Id;
+                        model.IsSemiComplaint = true;
                         model.Explanation = $"Door Id: {door.Instance.Id} ({Math.Round(currentDistance, 2)} mts away) " +
                             $"Exit door found but the door does not open outward.";
                     }
@@ -140,11 +141,6 @@ namespace RevitCore.Compliance.FireSafety
                 model.Explanation = $"No Exit door found within {distance} mts." +
                     $"Closest Door to the room ->\n" +
                     $"Door ID: {closedDoorId} ({Math.Round(minDistance, 2)} mts away)";
-            }
-
-            if (!model.IsComplaint)
-            {
-                
             }
 
             return model;
